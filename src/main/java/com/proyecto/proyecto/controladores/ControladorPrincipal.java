@@ -74,22 +74,25 @@ public class ControladorPrincipal {
     @GetMapping("/carrito/agregar/{codigo}")
     @ResponseBody
     public String agregarAlCarrito(@PathVariable String codigo, @RequestHeader(required = false) String referer) {
+        // Verificación en Lista de Productos
         Producto prod = listaProductos.stream()
                 .filter(p -> p.codigo.equals(codigo))
                 .findFirst()
                 .orElse(null);
-        
+
+        // Verificación en Lista de Ofertas
         if (prod == null) {
             prod = ofertas.stream()
                     .filter(p -> p.codigo.equals(codigo))
                     .findFirst()
                     .orElse(null);
         }
-
+        // Si lo encontró lo agrega
         if (prod != null) {
             carritoService.agregarItem(prod, 1);
         }
 
+        // No lo encuentra da error
         if(prod == null){
             return "Error";
         }

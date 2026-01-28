@@ -14,7 +14,8 @@ import com.proyecto.proyecto.clases.Producto;
 @SessionScope // ¡Importante! Mantiene los datos mientras el usuario navega
 public class CarritoService {
     private List<ItemCarrito> items = new ArrayList<>();
-
+    
+    // Agrega item si no encuentra en la lista de carrito, caso contrario sube la cantidad
     public void agregarItem(Producto producto, Integer cantidad) {
         Optional<ItemCarrito> itemExistente = items.stream()
                 .filter(i -> i.getProducto().codigo.equals(producto.codigo))
@@ -28,10 +29,12 @@ public class CarritoService {
         }
     }
 
+    // Remover el producto por código
     public void eliminarItem(String codigo) {
         items.removeIf(i -> i.getProducto().codigo.equals(codigo));
     }
 
+    // Aumenta o disminuye las cantidades
     public void actualizarCantidad(String codigo, Integer cantidad) {
         items.stream()
             .filter(i -> i.getProducto().codigo.equals(codigo))
@@ -39,6 +42,7 @@ public class CarritoService {
             .ifPresent(item -> item.setCantidad(cantidad));
     }
 
+    // Devuelve los items del carrito
     public List<ItemCarrito> obtenerItems() {
         return items;
     }

@@ -51,6 +51,7 @@
     </nav>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        // Función que sirve para hacer animación de agregado item
         function agregar(codigoProducto){
             fetch('/carrito/agregar/' + codigoProducto)
             .then(response => {
