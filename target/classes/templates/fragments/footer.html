@@ -1,0 +1,54 @@
+<!-- Footer -->
+<div th:fragment="footer" class="footer-wrapper">
+
+    <div class="footer-inner">
+        <footer class="container py-5">
+
+            <div class="row justify-content-center">
+
+                <!-- Empresa -->
+                <div class="col-12 col-md-3 mb-4">
+                    <h5>Calzados Bellasen</h5>
+                    <p>
+                        Empresa MYPE dedicada a la fabricación y venta de calzado cómodo,
+                        resistente y con estilo.
+                    </p>
+                    <p>Trujillo - La Libertad</p>
+                </div>
+
+                <!-- Enlaces -->
+                <div class="col-12 col-md-3 mb-4">
+                    <h5>Enlaces</h5>
+                    <ul>
+                        <li><a th:href="@{/}">Inicio</a></li>
+                        <li><a th:href="@{/catalogo}">Catálogo</a></li>
+                        <li><a th:href="@{/reclamaciones}">Libro de Reclamaciones</a></li>
+                        <li><a th:href="@{/nosotros}">Nosotros</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contacto -->
+                <div class="col-12 col-md-3 mb-4">
+                    <h5>Contacto</h5>
+                    <p>Teléfono: 987 654 321</p>
+                    <p>Email: contacto@bellasen.pe</p>
+
+                    <div class="social-links">
+                        <a href="#">Facebook</a>
+                        <a href="#">Instagram</a>
+                        <a href="#">TikTok</a>
+                    </div>
+                </div>
+
+            </div>
+
+            <hr>
+
+            <p class="footer-copy">
+                © 2026 MYPE Calzados Bellasen · Hecho en Trujillo
+            </p>
+
+        </footer>
+    </div>
+
+</div>

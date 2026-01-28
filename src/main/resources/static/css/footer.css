@@ -1,0 +1,89 @@
+
+
+.footer-wrapper {
+    background-color: #2f2f2f;
+    color: #ffffff;
+    width: 100%;
+    border-top: 4px solid #ff7a18;
+}
+
+/* Capa que centra el contenido */
+.footer-inner {
+    max-width: 1400px;
+    margin: 0 auto;         
+    padding: 0 2rem;         
+}
+
+/* Títulos */
+.footer-wrapper h5 {
+    color: #ff7a18;
+    font-size: 1.15rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    text-align: left;
+}
+
+/* Texto */
+.footer-wrapper p {
+    font-size: 0.95rem;
+    color: #dddddd;
+    line-height: 1.6;
+}
+
+/* Listas */
+.footer-wrapper ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Enlaces */
+.footer-wrapper a {
+    color: #ff7a18;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 0.4rem;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.footer-wrapper a:hover {
+    color: #ffffff;
+    transform: translateX(6px);
+}
+
+/* Redes */
+.social-links a {
+    margin-right: 12px;
+    font-weight: 500;
+}
+
+/* Línea */
+.footer-wrapper hr {
+    border-color: rgba(255,255,255,0.2);
+    margin: 2.5rem 0 1.5rem;
+}
+
+/* Copyright */
+.footer-copy {
+    text-align: center;
+    font-size: 0.85rem;
+    color: #cccccc;
+}
+
+/* RESPONSIVE*/
+
+@media (max-width: 768px) {
+    .footer-wrapper {
+        text-align: center;
+    }
+
+    .footer-wrapper h5 {
+        text-align: center;
+    }
+
+    .social-links a {
+        display: block;
+        margin: 0.5rem 0;
+        transform: none;
+    }
+}

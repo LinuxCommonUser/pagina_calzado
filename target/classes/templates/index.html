@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio | Calzados Bellasen</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+    <!-- CSS propios -->
+    <link rel="stylesheet" th:href="@{css/header.css}">
+    <link rel="stylesheet" th:href="@{css/footer.css}">
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+    <!-- HEADER -->
+    <div th:replace="fragments/header :: header"></div>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="container flex-fill mt-5 mb-5 text-center">
+        <h2 class="mb-3">Bienvenidos a Calzados Bellasen</h2>
+
+        <p class="lead">
+            Somos una MYPE trujillana dedicada a la fabricación y venta de calzado
+            cómodo, resistente y con estilo para toda la familia.
+        </p>
+
+        <p>
+            Calidad, tradición y compromiso desde Trujillo para todo el Perú.
+        </p>
+    </main>
+
+    <!-- FOOTER -->
+    <div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>
