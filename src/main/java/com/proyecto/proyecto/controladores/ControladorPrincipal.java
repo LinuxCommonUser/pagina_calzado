@@ -3,12 +3,25 @@ package com.proyecto.proyecto.controladores;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.proyecto.proyecto.clases.Producto;
+import com.proyecto.proyecto.servicios.CarritoService;
 
 @Controller
 public class ControladorPrincipal {
+
+    @Autowired
+    private CarritoService carritoService;
+
     private List<Producto> listaProductos = new ArrayList<>();
     private List<Producto> ofertas = new ArrayList<>();
 
@@ -24,7 +37,8 @@ public class ControladorPrincipal {
     }
 
     @GetMapping("/")
-    public String index() {
+    public String index(Model model) {
+        model.addAttribute("productosDestacados",ofertas);
         return "index";
     }
 
@@ -50,21 +64,48 @@ public class ControladorPrincipal {
         return "contacto";
     }
 
-    public class Producto {
-        public String codigo;
-        public String nombre;
-        public String categoria;
-        public String material;
-        public double precio;
-        public String imagen;
+    @GetMapping("/carrito")
+    public String verCarrito(Model model) {
+        model.addAttribute("items", carritoService.obtenerItems());
+        model.addAttribute("total", carritoService.obtenerTotal());
+        return "carrito";
+    }
 
-        public Producto(String codigo, String nombre, String categoria, String material, double precio, String imagen) {
-            this.codigo = codigo;
-            this.nombre = nombre;
-            this.categoria = categoria;
-            this.material = material;
-            this.precio = precio;
-            this.imagen = imagen;
+    @GetMapping("/carrito/agregar/{codigo}")
+    @ResponseBody
+    public String agregarAlCarrito(@PathVariable String codigo, @RequestHeader(required = false) String referer) {
+        Producto prod = listaProductos.stream()
+                .filter(p -> p.codigo.equals(codigo))
+                .findFirst()
+                .orElse(null);
+        
+        if (prod == null) {
+            prod = ofertas.stream()
+                    .filter(p -> p.codigo.equals(codigo))
+                    .findFirst()
+                    .orElse(null);
         }
+
+        if (prod != null) {
+            carritoService.agregarItem(prod, 1);
+        }
+
+        if(prod == null){
+            return "Error";
+        }
+        
+        return "Ok";
+    }
+
+    @GetMapping("/carrito/eliminar/{codigo}")
+    public String eliminarDelCarrito(@PathVariable String codigo) {
+        carritoService.eliminarItem(codigo);
+        return "redirect:/carrito";
+    }
+
+    @PostMapping("/carrito/actualizar")
+    public String actualizarCantidad(@RequestParam String codigo, @RequestParam Integer cantidad) {
+        carritoService.actualizarCantidad(codigo, cantidad);
+        return "redirect:/carrito";
     }
 }

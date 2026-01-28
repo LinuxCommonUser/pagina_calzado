@@ -1,16 +1,13 @@
-<!-- Header -->
 <div th:fragment="header" class="container-fluid m-0 p-0">
 
-    <!-- Barra superior -->
     <div class="text-center py-2" style="background-color:#6b3e26; color:white;">
         Calzados Bellasen · Calidad y comodidad desde Trujillo 🇵🇪
     </div>
 
-    <!-- NavBar -->
-    <nav class="navbar navbar-expand-md navbar-light" style="background-color:#f8f4f1; height:6.25rem;">
-        <div class="container-fluid">
+    <nav class="navbar navbar-expand-md navbar-light shadow-sm" style="background-color:#f8f4f1; min-height:5rem;">
+        <div class="container-fluid px-4">
 
-            <a class="navbar-brand fw-bold" th:href="@{/}">
+            <a class="navbar-brand fw-bold" th:href="@{/}" style="color: #6b3e26;">
                 Calzados Bellasen
             </a>
 
@@ -20,32 +17,59 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <div class="collapse navbar-collapse justify-content-center" id="navbarBellasen">
-                <ul class="navbar-nav">
-
+            <div class="collapse navbar-collapse" id="navbarBellasen">
+                
+                <ul class="navbar-nav mx-auto mb-2 mb-md-0">
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/}">Inicio</a>
+                        <a class="nav-link px-3" th:href="@{/}">Inicio</a>
                     </li>
-
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/catalogo}">Catálogo</a>
+                        <a class="nav-link px-3" th:href="@{/catalogo}">Catálogo</a>
                     </li>
-
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/ofertas}">Ofertas</a>
+                        <a class="nav-link px-3" th:href="@{/ofertas}">Ofertas</a>
                     </li>
-
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/nosotros}">Nosotros</a>
+                        <a class="nav-link px-3" th:href="@{/nosotros}">Nosotros</a>
                     </li>
-
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/contacto}">Contacto</a>
+                        <a class="nav-link px-3" th:href="@{/contacto}">Contacto</a>
                     </li>
-
                 </ul>
+
+                <div class="d-flex">
+                    <a th:href="@{/carrito}" class="btn btn-outline-dark d-flex align-items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
+                            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm7 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+                        </svg>
+                        <span class="fw-bold">Carrito</span>
+                    </a>
+                </div>
+
             </div>
         </div>
     </nav>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function agregar(codigoProducto){
+            fetch('/carrito/agregar/' + codigoProducto)
+            .then(response => {
+                if (response.ok) {
+                    Swal.fire({
+                        position: 'bottom-end',
+                        icon: 'success',
+                        title: '¡Añadido al carrito!',
+                        showConfirmButton: false,
+                        timer: 1500,
+                        toast: true,
+                        background: '#fff',
+                        iconColor: '#28a745'
+                    });
+                } else {
+                    console.error('Error al agregar');
+                }
+            })
+            .catch(error => console.error('Error de conexión:', error));
+        }
+    </script>
 </div>

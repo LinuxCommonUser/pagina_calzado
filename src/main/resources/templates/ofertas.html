@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ofertas | Calzados Bellasen</title>
+    <link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{css/header.css}">
     <link rel="stylesheet" th:href="@{css/footer.css}">
@@ -28,11 +29,16 @@
                     <img th:src="${prod.imagen}" class="card-img-top" alt="Zapato">
                     <div class="card-body">
                         <h5 class="card-title" th:text="${prod.nombre}">Nombre</h5>
-                        <p class="card-text text-muted text-decoration-line-through" th:text="'S/ ' + ${prod.precio}">S/ 0.00</p>
-                        <h4 class="text-danger fw-bold" th:text="'S/ ' + (${prod.precio} - ${prod.precio}*0.2)">S/ 0.00</h4>
+                        <p class="card-text text-muted text-decoration-line-through" th:text="'S/ ' + (${prod.precio} + ${prod.precio}*0.2)">S/ 0.00</p>
+                        <h4 class="text-danger fw-bold" th:text="'S/ ' + ${prod.precio}">S/ 0.00</h4>
                     </div>
-                    <div class="card-footer bg-white">
-                        <button class="btn btn-outline-danger w-100">Comprar Ahora</button>
+                    <div class="card-footer bg-white border-top-0 d-grid gap-2">
+                    <button th:data-codigo="${prod.codigo}"
+                            onclick="agregar(this.getAttribute('data-codigo'))"
+                            class="btn btn-primary"
+                            style="background-color:#6b3e26; border-color:#6b3e26;">
+                        + Agregar al Carrito
+                    </button>
                     </div>
                 </div>
             </div>

@@ -4,34 +4,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio | Calzados Bellasen</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-          rel="stylesheet">
-    <!-- CSS propios -->
+    <link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{css/header.css}">
     <link rel="stylesheet" th:href="@{css/footer.css}">
+    <style>
+        .hero-section {
+            background: linear-gradient(rgba(107, 62, 38, 0.8), rgba(107, 62, 38, 0.8)), url('https://via.placeholder.com/1920x600?text=Taller+de+Cuero');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+        }
+    </style>
 </head>
 <body class="d-flex flex-column min-vh-100">
 
-    <!-- HEADER -->
     <div th:replace="fragments/header :: header"></div>
 
-    <!-- CONTENIDO PRINCIPAL -->
-    <main class="container flex-fill mt-5 mb-5 text-center">
-        <h2 class="mb-3">Bienvenidos a Calzados Bellasen</h2>
+    <header class="hero-section text-center mb-5">
+        <div class="container">
+            <h1 class="display-3 fw-bold">Calzados Bellasen</h1>
+            <p class="lead mb-4 fs-3">Elegancia y resistencia trujillana a tus pies.</p>
+            <a th:href="@{/catalogo}" class="btn btn-light btn-lg px-5 fw-bold text-uppercase" style="color:#6b3e26;">Ver Catálogo</a>
+        </div>
+    </header>
 
-        <p class="lead">
-            Somos una MYPE trujillana dedicada a la fabricación y venta de calzado
-            cómodo, resistente y con estilo para toda la familia.
-        </p>
+    <main class="container flex-fill mb-5">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="mb-3 text-secondary">Tradición y Calidad</h2>
+                <p class="text-muted fs-5">
+                    Somos una MYPE dedicada a la fabricación de calzado cómodo y con estilo. 
+                    Cada par es elaborado por artesanos trujillanos comprometidos con la excelencia.
+                </p>
+            </div>
+        </div>
 
-        <p>
-            Calidad, tradición y compromiso desde Trujillo para todo el Perú.
-        </p>
+        <h3 class="border-bottom pb-2 mb-4">Destacados de Temporada</h3>
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+            <div class="col" th:each="prod : ${productosDestacados}">
+                <div class="card h-100 border-0 shadow-sm">
+                    <img th:src="${prod.imagen}" class="card-img-top rounded" alt="...">
+                    <div class="card-body text-center">
+                        <h6 class="card-title fw-bold" th:text="${prod.nombre}">Producto</h6>
+                        <p class="card-text text-primary" th:text="'S/ ' + ${prod.precio}"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
-    <!-- FOOTER -->
     <div th:replace="fragments/footer :: footer"></div>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
