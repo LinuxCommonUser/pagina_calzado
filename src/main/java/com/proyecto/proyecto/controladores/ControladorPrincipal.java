@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.proyecto.proyecto.clases.Producto;
 import com.proyecto.proyecto.servicios.CarritoService;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class ControladorPrincipal {
 
@@ -133,7 +135,11 @@ public class ControladorPrincipal {
     }
 
     @GetMapping("/carrito")
-    public String verCarrito(Model model) {
+    public String verCarrito(Model model, HttpSession session) {
+        if (session.getAttribute("usuario") == null) {
+        return "redirect:/login";
+    }
+        
         model.addAttribute("items", carritoService.obtenerItems());
         model.addAttribute("total", carritoService.obtenerTotal());
         return "carrito";
@@ -141,7 +147,12 @@ public class ControladorPrincipal {
 
     @GetMapping("/carrito/agregar/{codigo}")
     @ResponseBody
-    public String agregarAlCarrito(@PathVariable String codigo, @RequestHeader(required = false) String referer) {
+    public String agregarAlCarrito(@PathVariable String codigo, @RequestHeader(required = false) String referer, HttpSession session) {
+
+        // Verificar si está logeado
+        if (session.getAttribute("usuario") == null) {
+            return "NO_LOGIN";
+        }
         // Verificación en Lista de Productos
         Producto prod = listaProductos.stream()
                 .filter(p -> p.codigo.equals(codigo))
