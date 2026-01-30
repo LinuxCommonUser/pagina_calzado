@@ -18,31 +18,67 @@
             ¡Aprovecha nuestros descuentos de temporada! Hasta <strong>20% DSCTO</strong> en seleccionados.
         </div>
 
+        <form th:action="@{/ofertas}" method="get" class="row g-3 mb-5">
+            <div class="col-md-6">
+                <input type="text" name="buscar" th:value="${busquedaActual}" class="form-control"
+                    placeholder="Buscar en ofertas por nombre o material...">
+            </div>
+
+            <div class="col-md-4">
+                <select name="categoria" class="form-select">
+                    <option value="todos" th:selected="${categoriaActual == 'todos'}">Todas las categorías</option>
+                    <option value="Dama" th:selected="${categoriaActual == 'Dama'}">Dama</option>
+                    <option value="Caballero" th:selected="${categoriaActual == 'Caballero'}">Caballero</option>
+                    <option value="Unisex" th:selected="${categoriaActual == 'Unisex'}">Unisex</option>
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-dark w-100">Filtrar Ofertas</button>
+            </div>
+        </form>
+
         <h2 class="text-center mb-4">Ofertas Especiales</h2>
 
         <div class="row row-cols-1 row-cols-md-3 g-4">
             <div class="col" th:each="prod : ${productos}">
-                <div class="card h-100 border-danger">
-                    <div class="position-absolute top-0 end-0 bg-danger text-white px-2 py-1 rounded-start">
+                <div class="card h-100 border-danger position-relative">
+                    
+                    <div class="position-absolute top-0 end-0 bg-danger text-white px-2 py-1 rounded-start" style="z-index: 10;">
                         OFERTA
                     </div>
-                    <img th:src="${prod.imagen}" class="card-img-top" alt="Zapato">
+                    
+                    <a th:href="@{/producto/{cod}(cod=${prod.codigo}, origen='ofertas')}">
+                        <img th:src="${prod.imagen}" class="card-img-top" alt="Zapato" style="cursor: pointer;">
+                    </a>
+
                     <div class="card-body">
-                        <h5 class="card-title" th:text="${prod.nombre}">Nombre</h5>
-                        <p class="card-text text-muted text-decoration-line-through" th:text="'S/ ' + (${prod.precio} + ${prod.precio}*0.2)">S/ 0.00</p>
+                        <a th:href="@{/producto/{cod}(cod=${prod.codigo}, origen='ofertas')}" class="text-decoration-none text-dark">
+                            <h5 class="card-title" th:text="${prod.nombre}">Nombre</h5>
+                        </a>
+
+                        <p class="card-text text-muted text-decoration-line-through" 
+                           th:text="'S/ ' + (${prod.precio} + ${prod.precio}*0.2)">S/ 0.00</p>
                         <h4 class="text-danger fw-bold" th:text="'S/ ' + ${prod.precio}">S/ 0.00</h4>
                     </div>
+
                     <div class="card-footer bg-white border-top-0 d-grid gap-2">
-                    <button th:data-codigo="${prod.codigo}"
-                            onclick="agregar(this.getAttribute('data-codigo'))"
-                            class="btn btn-primary"
-                            style="background-color:#6b3e26; border-color:#6b3e26;">
-                        + Agregar al Carrito
-                    </button>
+                        <button th:data-codigo="${prod.codigo}"
+                                onclick="agregar(this.getAttribute('data-codigo'))"
+                                class="btn btn-primary"
+                                style="background-color:#6b3e26; border-color:#6b3e26;">
+                            + Agregar al Carrito
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div th:if="${productos.empty}" class="text-center py-5">
+            <h4 class="text-muted">No encontramos ofertas que coincidan con tu búsqueda.</h4>
+            <a th:href="@{/ofertas}" class="btn btn-link">Ver todas las ofertas</a>
+        </div>
+
     </main>
 
     <div th:replace="~{fragments/footer :: footer}"></div>
