@@ -2,6 +2,7 @@ package com.proyecto.proyecto.controladores;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,10 +31,22 @@ public class ControladorPrincipal {
         listaProductos.add(new Producto("CB-002", "Stiletto Nude", "Dama", "Gamuza", 145.00, "https://calimodpruebaio.vtexassets.com/arquivos/ids/254826/7YT00700025_1-zapato-de-vestir-estileto-con-taco-aguja-color-nude.jpg?v=638512388037000000"));
         listaProductos.add(new Producto("CB-003", "Bota de Cuero Premium", "Dama", "Cuero", 210.00, "https://oechsle.vteximg.com.br/arquivos/ids/16866428/image-0.jpg?v=638363847528000000"));
         listaProductos.add(new Producto("CB-004", "Zapatilla Urbana", "Unisex", "Lona", 95.00, "https://plazavea.vteximg.com.br/arquivos/ids/31181508-418-418/image-019b5f07537e4612adb19789254a45d3.jpg"));
-        ofertas.add(new Producto("CB-005", "Zapatilla Basica", "Caballero", "Cuero", 100.00, "https://vialepe.vtexassets.com/arquivos/ids/190962/ZAPATILLA-0-CASUAL-HOMBRE-CUERO-VIALE-HOMME-FLAT-4-RICARDO-025-MARRON-1_1000px-1.jpg?v=638544040861800000"));
-        ofertas.add(new Producto("CB-006", "Stiletto Viale", "Dama", "Cuero", 150.00, "https://vialepe.vtexassets.com/arquivos/ids/191824/ZAPATO-STILETTO-VESTIR-DAMA-CUERO-VIALE-TACO-7-HER-2411-VISON-1.jpg?v=638544042037000000"));
-        ofertas.add(new Producto("CB-007", "Bota Pauli", "Dama", "Sintético", 80.00, "https://d3fvqmu2193zmz.cloudfront.net/items_2/uid_commerces.1/uid_items_2.FDC9GFJT1TAO/500x500/65C62D6324F92-Bota-Dama-B-Pauli.webp"));
-        ofertas.add(new Producto("CB-008", "Zapato Estelar", "Caballero", "Cuero", 145.00, "https://greenbay.pe/cdn/shop/files/ESTELAR_-_3024G-NEGRO_1.webp?v=1746816605"));
+        listaProductos.add(new Producto("CB-005", "MM Slingback", "Dama", "Cuero", 229.00, "https://media.falabella.com.pe/falabellaPE/142770016_01/width=480,height=480,quality=70,format=webp,fit=pad"));
+        listaProductos.add(new Producto("CB-006", "Stiletto Verano", "Dama", "Generico", 150.00, "https://media.falabella.com.pe/falabellaPE/150362485_01/width=480,height=480,quality=70,format=webp,fit=pad"));
+        listaProductos.add(new Producto("CB-007", "Bota casual", "Dama", "Cuero", 149.00, "https://media.falabella.com.pe/falabellaPE/145023465_01/width=480,height=480,quality=70,format=webp,fit=pad"));
+        listaProductos.add(new Producto("CB-008", "Crystal Blanco", "Unisex", "Cuero", 95.00, "https://media.falabella.com.pe/falabellaPE/146613606_01/width=480,height=480,quality=70,format=webp,fit=pad"));
+        listaProductos.add(new Producto("CB-009", "Calzado Sirena", "Dama", "Cuero", 199.00, "https://media.falabella.com.pe/falabellaPE/150744779_01/width=480,height=480,quality=70,format=webp,fit=pad"));
+        listaProductos.add(new Producto("CB-010", "Botin", "Caballero", "Cuero", 299.00, "https://media.falabella.com.pe/falabellaPE/133234058_01/width=480,height=480,quality=70,format=webp,fit=pad"));
+        listaProductos.add(new Producto("CB-011", "Zapato Scuderiia", "Caballero", "Cuero", 210.00, "https://media.falabella.com.pe/falabellaPE/20178235_1/width=480,height=480,quality=70,format=webp,fit=pad"));
+        listaProductos.add(new Producto("CB-012", "Zapatilla Urbana", "Caballero", "Lona", 249.00, "https://media.falabella.com.pe/falabellaPE/21100558_01/width=480,height=480,quality=70,format=webp,fit=pad"));
+        ofertas.add(new Producto("CB-013", "Zapatilla Basica", "Caballero", "Cuero", 100.00, "https://vialepe.vtexassets.com/arquivos/ids/190962/ZAPATILLA-0-CASUAL-HOMBRE-CUERO-VIALE-HOMME-FLAT-4-RICARDO-025-MARRON-1_1000px-1.jpg?v=638544040861800000"));
+        ofertas.add(new Producto("CB-014", "Stiletto Viale", "Dama", "Cuero", 150.00, "https://vialepe.vtexassets.com/arquivos/ids/191824/ZAPATO-STILETTO-VESTIR-DAMA-CUERO-VIALE-TACO-7-HER-2411-VISON-1.jpg?v=638544042037000000"));
+        ofertas.add(new Producto("CB-015", "Bota Pauli", "Dama", "Sintético", 80.00, "https://d3fvqmu2193zmz.cloudfront.net/items_2/uid_commerces.1/uid_items_2.FDC9GFJT1TAO/500x500/65C62D6324F92-Bota-Dama-B-Pauli.webp"));
+        ofertas.add(new Producto("CB-016", "Zapato Estelar", "Caballero", "Cuero", 145.00, "https://greenbay.pe/cdn/shop/files/ESTELAR_-_3024G-NEGRO_1.webp?v=1746816605"));
+        ofertas.add(new Producto("CB-017", "Zapato casual", "Caballero", "Cuero", 199.00, "https://media.falabella.com.pe/falabellaPE/883301166_1/width=480,height=480,quality=70,format=webp,fit=pad"));
+        ofertas.add(new Producto("CB-018", "Zapato casual", "Dama", "Cuero", 150.00, "https://media.falabella.com.pe/falabellaPE/139621729_01/width=480,height=480,quality=70,format=webp,fit=pad"));
+        ofertas.add(new Producto("CB-019", "Botin Science Mid", "Caballero", "Sintético", 299.00, "https://media.falabella.com.pe/falabellaPE/18903384_1/width=480,height=480,quality=70,format=webp,fit=pad"));
+        ofertas.add(new Producto("CB-020", "Zapatilla Urbana VI Court", "Dama", "Lona", 199.00, "https://media.falabella.com.pe/falabellaPE/20118360_1/width=480,height=480,quality=70,format=webp,fit=pad"));
     }
 
     @GetMapping("/")
@@ -43,14 +56,69 @@ public class ControladorPrincipal {
     }
 
     @GetMapping("/catalogo")
-    public String catalogo(Model model) {
-        model.addAttribute("productos", listaProductos);
+    public String catalogo(Model model, 
+                        @RequestParam(required = false) String buscar, 
+                        @RequestParam(required = false) String categoria) {
+        
+    List<Producto> filtrados = listaProductos.stream()
+        .filter(p -> (buscar == null || buscar.isBlank()) || 
+                    p.getNombre().toLowerCase().contains(buscar.toLowerCase()) || 
+                    p.getMaterial().toLowerCase().contains(buscar.toLowerCase()))
+        .filter(p -> (categoria == null || categoria.equals("todos") || categoria.isBlank()) || 
+                    p.getCategoria().equalsIgnoreCase(categoria))
+        .collect(Collectors.toList());
+
+        model.addAttribute("productos", filtrados);
+        model.addAttribute("busquedaActual", buscar);
+        model.addAttribute("categoriaActual", categoria);
+
         return "catalogo";
     }
 
+    @GetMapping("/producto/{cod}")
+    public String verDetalles(@PathVariable("cod") String cod, Model model, @RequestParam(required = false) String origen) {
+        Producto encontrado = listaProductos.stream()
+                .filter(p -> p.getCodigo().equals(cod))
+                .findFirst()
+                .orElse(null);
+
+        if (encontrado == null){
+            encontrado = ofertas.stream()
+                .filter(p -> p.getCodigo().equals(cod))
+                .findFirst()
+                .orElse(null);
+        }
+
+        String rutaVolver = "/catalogo";
+        String nombreOrigen = "Catálogo";
+
+        if ("ofertas".equals(origen)) {
+            rutaVolver = "/ofertas";
+            nombreOrigen = "Ofertas";
+        }
+
+        model.addAttribute("p", encontrado);
+        model.addAttribute("rutaVolver", rutaVolver);
+        model.addAttribute("nombreOrigen", nombreOrigen);
+        
+        return "detalle_producto"; 
+    }
+
     @GetMapping("/ofertas")
-    public String ofertas(Model model) {
-        model.addAttribute("productos", ofertas); 
+    public String ofertas(Model model,
+    @RequestParam(required = false) String buscar, 
+                        @RequestParam(required = false) String categoria) {
+        List<Producto> filtrados = ofertas.stream()
+        .filter(p -> (buscar == null || buscar.isBlank()) || 
+                    p.getNombre().toLowerCase().contains(buscar.toLowerCase()) || 
+                    p.getMaterial().toLowerCase().contains(buscar.toLowerCase()))
+        .filter(p -> (categoria == null || categoria.equals("todos") || categoria.isBlank()) || 
+                    p.getCategoria().equalsIgnoreCase(categoria))
+        .collect(Collectors.toList());
+
+        model.addAttribute("productos", filtrados);
+        model.addAttribute("busquedaActual", buscar);
+        model.addAttribute("categoriaActual", categoria);
         return "ofertas";
     }
 
