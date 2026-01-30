@@ -17,6 +17,7 @@ public class LoginController {
 
     private static final List<Map<String, String>> usuarios = new ArrayList<>();
 
+
     @GetMapping("/login")
     public String login() {
         return "login";
@@ -29,7 +30,7 @@ public class LoginController {
             HttpSession session,
             Model model) {
 
-        
+        // Validar contra la lista de usuarios
         for (Map<String, String> usuario : usuarios) {
             if (usuario.get("username").equals(username)
                     && usuario.get("password").equals(password)) {
@@ -56,22 +57,26 @@ public class LoginController {
             @RequestParam String username,
             @RequestParam String password,
             Model model) {
- 
+
+        // Verificar si el username ya existe
         for (Map<String, String> usuario : usuarios) {
             if (usuario.get("username").equals(username)) {
                 model.addAttribute("error", "El usuario ya existe");
                 return "login";
             }
         }
-        
+
+        // Crear usuario
         Map<String, String> nuevoUsuario = new HashMap<>();
         nuevoUsuario.put("nombre", nombre);
         nuevoUsuario.put("correo", correo);
         nuevoUsuario.put("username", username);
         nuevoUsuario.put("password", password);
-        
+
+        // Guardar en la lista
         usuarios.add(nuevoUsuario);
 
+        // Enviar datos a la vista de confirmación
         model.addAttribute("nombre", nombre);
         model.addAttribute("correo", correo);
         model.addAttribute("username", username);
