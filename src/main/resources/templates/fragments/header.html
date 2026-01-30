@@ -71,26 +71,34 @@
     </nav>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        // Función que sirve para hacer animación de agregado item
-        function agregar(codigoProducto){
-            fetch('/carrito/agregar/' + codigoProducto)
-            .then(response => {
-                if (response.ok) {
-                    Swal.fire({
-                        position: 'bottom-end',
-                        icon: 'success',
-                        title: '¡Añadido al carrito!',
-                        showConfirmButton: false,
-                        timer: 1500,
-                        toast: true,
-                        background: '#fff',
-                        iconColor: '#28a745'
-                    });
-                } else {
-                    console.error('Error al agregar');
-                }
-            })
-            .catch(error => console.error('Error de conexión:', error));
-        }
+    // Función que sirve para hacer animación de agregado item
+    function agregar(codigoProducto) {
+        fetch('/carrito/agregar/' + codigoProducto)
+        .then(response => response.text())
+        .then(data => {
+
+            if (data === 'NO_LOGIN') {
+                window.location.href = '/login';
+                return;
+            }
+
+            if (data === 'Ok') {
+                Swal.fire({
+                    position: 'bottom-end',
+                    icon: 'success',
+                    title: '¡Añadido al carrito!',
+                    showConfirmButton: false,
+                    timer: 1500,
+                    toast: true,
+                    background: '#fff',
+                    iconColor: '#28a745'
+                });
+            } else {
+                console.error('Error al agregar');
+            }
+        })
+        .catch(error => console.error('Error de conexión:', error));
+    }
     </script>
+
 </div>
