@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Productos</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body{
+            background-color:#f4f6f9;
+        }
+        .card-stats{
+            border-left:5px solid #0d6efd;
+        }
+        .sidebar{
+            background:#212529;
+            min-height:100vh;
+        }
+        .sidebar a{
+            color:white;
+            text-decoration:none;
+            display:block;
+            padding:12px;
+        }
+        .sidebar a:hover{
+            background:#0d6efd;
+        }
+        .active-link{
+            background:#0d6efd;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <!-- SIDEBAR -->
+        <div class="col-md-2 sidebar p-0">
+            <h4 class="text-center text-white py-3">ADMIN PANEL</h4>
+
+            <a href="/admin/dashboard">Dashboard</a>
+            <a href="/admin/usuarios">Usuarios</a>
+            <a href="/admin/productos" class="active-link">Productos</a>
+            <a href="/admin/ventas">Ventas</a>
+            <a href="/admin/pagos">Pagos</a>
+        </div>
+
+        <!-- CONTENIDO -->
+        <div class="col-md-10 p-4">
+
+            <h2 class="mb-4">Gestión de Productos</h2>
+
+            <!-- CARDS ESTADÍSTICAS -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card card-stats shadow">
+                        <div class="card-body">
+                            <h6>Total Productos</h6>
+                            <h3 th:text="${totalProductos}">0</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <h6>Stock Bajo</h6>
+                            <h3 th:text="${stockBajo}">0</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FORMULARIO -->
+            <div class="card mb-4 shadow">
+                <div class="card-header bg-primary text-white">
+                    Crear / Editar Producto
+                </div>
+                <div class="card-body">
+
+                    <form th:action="@{/admin/productos/guardar}"
+                          th:object="${producto}"
+                          method="post">
+
+                        <input type="hidden" th:field="*{idProducto}" />
+
+                        <div class="row">
+
+                            <div class="col-md-3 mb-3">
+                                <label>Código SKU</label>
+                                <input class="form-control"
+                                       th:field="*{codigo}" required>
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <label>Nombre</label>
+                                <input class="form-control"
+                                       th:field="*{nombre}" required>
+                            </div>
+
+                            <div class="col-md-2 mb-3">
+                                <label>Precio</label>
+                                <input type="number" step="0.01"
+                                       class="form-control"
+                                       th:field="*{precio}">
+                            </div>
+
+                            <div class="col-md-2 mb-3">
+                                <label>Oferta</label>
+                                <input type="number" step="0.01"
+                                       class="form-control"
+                                       th:field="*{precioOferta}">
+                            </div>
+
+                            <div class="col-md-2 mb-3">
+                                <label>Stock</label>
+                                <input type="number"
+                                       class="form-control"
+                                       th:field="*{stock}">
+                            </div>
+
+                        </div>
+
+                        <button type="submit" class="btn btn-success">
+                            Guardar Producto
+                        </button>
+
+                    </form>
+                </div>
+            </div>
+
+            <!-- TABLA -->
+            <div class="card shadow">
+                <div class="card-header bg-dark text-white">
+                    Lista de Productos
+                </div>
+
+                <div class="card-body">
+
+                    <table class="table table-hover">
+                        <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Código</th>
+                            <th>Nombre</th>
+                            <th>Precio</th>
+                            <th>Oferta</th>
+                            <th>Stock</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr th:each="p : ${productos}">
+                            <td th:text="${p.idProducto}"></td>
+                            <td th:text="${p.codigo}"></td>
+                            <td th:text="${p.nombre}"></td>
+                            <td th:text="${p.precio}"></td>
+                            <td th:text="${p.precioOferta}"></td>
+                            <td>
+                                <span class="badge bg-success"
+                                      th:if="${p.stock > 10}"
+                                      th:text="${p.stock}">
+                                </span>
+
+                                <span class="badge bg-warning text-dark"
+                                      th:if="${p.stock <= 10 && p.stock > 0}"
+                                      th:text="${p.stock}">
+                                </span>
+
+                                <span class="badge bg-danger"
+                                      th:if="${p.stock == 0}">
+                                      Sin Stock
+                                </span>
+                            </td>
+
+                            <td>
+                                <a th:href="@{'/admin/productos/editar/' + ${p.idProducto}}"
+                                   class="btn btn-sm btn-warning">
+                                    Editar
+                                </a>
+
+                                <a th:href="@{'/admin/productos/eliminar/' + ${p.idProducto}}"
+                                   class="btn btn-sm btn-danger"
+                                   onclick="return confirm('¿Eliminar producto?')">
+                                    Eliminar
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

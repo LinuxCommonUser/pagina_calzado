@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Usuarios</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body{
+            background-color:#f4f6f9;
+        }
+        .card-stats{
+            border-left:5px solid #0d6efd;
+        }
+        .sidebar{
+            background:#212529;
+            min-height:100vh;
+        }
+        .sidebar a{
+            color:white;
+            text-decoration:none;
+            display:block;
+            padding:12px;
+        }
+        .sidebar a:hover{
+            background:#0d6efd;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <!-- SIDEBAR -->
+        <div class="col-md-2 sidebar p-0">
+            <h4 class="text-center text-white py-3">ADMIN PANEL</h4>
+            <a href="#">Dashboard</a>
+            <a href="/admin/usuarios">Usuarios</a>
+            <a href="/admin/productos">Productos</a>
+            <a href="#">Ventas</a>
+            <a href="#">Pagos</a>
+        </div>
+
+        <!-- CONTENIDO -->
+        <div class="col-md-10 p-4">
+
+            <h2 class="mb-4">Gestión de Usuarios</h2>
+
+            <!-- CARDS ESTADÍSTICAS -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card card-stats shadow">
+                        <div class="card-body">
+                            <h6>Total Usuarios</h6>
+                            <h3 th:text="${totalUsuarios}"></h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <h6>Admins</h6>
+                            <h3 th:text="${totalAdmins}"></h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <h6>Clientes</h6>
+                            <h3 th:text="${totalClientes}"></h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <h6>Vendedores</h6>
+                            <h3 th:text="${totalVendedores}"></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FORMULARIO -->
+            <div class="card mb-4 shadow">
+                <div class="card-header bg-primary text-white">
+                    Crear / Editar Usuario
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/admin/usuarios/guardar}" 
+                          th:object="${usuario}" 
+                          method="post">
+
+                        <input type="hidden" th:field="*{idUsuario}" />
+
+                        <div class="row">
+
+                            <div class="col-md-4 mb-3">
+                                <label>Nombre Completo</label>
+                                <input type="text" class="form-control"
+                                       th:field="*{nombreCompleto}" required>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label>Username</label>
+                                <input type="text" class="form-control"
+                                       th:field="*{username}" required>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label>Correo</label>
+                                <input type="email" class="form-control"
+                                       th:field="*{correo}">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label>Password</label>
+                                <input type="text" class="form-control"
+                                       th:field="*{password}" required>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label>DNI / RUC</label>
+                                <input type="text" class="form-control"
+                                       th:field="*{dniRuc}">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label>Teléfono</label>
+                                <input type="text" class="form-control"
+                                       th:field="*{telefono}">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label>Rol</label>
+                                <select class="form-control"
+                                        th:field="*{rol}">
+                                    <option value="CLIENTE">CLIENTE</option>
+                                    <option value="ADMIN">ADMIN</option>
+                                    <option value="VENDEDOR">VENDEDOR</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <button type="submit" class="btn btn-success">
+                            Guardar Usuario
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- TABLA -->
+            <div class="card shadow">
+                <div class="card-header bg-dark text-white">
+                    Lista de Usuarios
+                </div>
+                <div class="card-body">
+
+                    <table class="table table-hover">
+                        <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Username</th>
+                            <th>Correo</th>
+                            <th>Rol</th>
+                            <th>DNI/RUC</th>
+                            <th>Teléfono</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="u : ${usuarios}">
+                            <td th:text="${u.idUsuario}"></td>
+                            <td th:text="${u.nombreCompleto}"></td>
+                            <td th:text="${u.username}"></td>
+                            <td th:text="${u.correo}"></td>
+
+                            <td>
+                                <span class="badge bg-success"
+                                      th:if="${u.rol == 'ADMIN'}">ADMIN</span>
+                                <span class="badge bg-primary"
+                                      th:if="${u.rol == 'CLIENTE'}">CLIENTE</span>
+                                <span class="badge bg-warning text-dark"
+                                      th:if="${u.rol == 'VENDEDOR'}">VENDEDOR</span>
+                            </td>
+
+                            <td th:text="${u.dniRuc}"></td>
+                            <td th:text="${u.telefono}"></td>
+
+                            <td>
+                                <a th:href="@{'/admin/usuarios/editar/' + ${u.idUsuario}}"
+                                   class="btn btn-sm btn-warning">
+                                    Editar
+                                </a>
+
+                                <a th:href="@{'/admin/usuarios/eliminar/' + ${u.idUsuario}}"
+                                   class="btn btn-sm btn-danger"
+                                   onclick="return confirm('¿Eliminar usuario?')">
+                                    Eliminar
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -10,4 +10,6 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     Producto findByCodigo(String codigo);
     List<Producto> findByPrecioOfertaIsNotNull(); // Para ofertas
     List<Producto> findByNombreContainingOrMaterialContaining(String nombre, String material);
+    
+
 }
