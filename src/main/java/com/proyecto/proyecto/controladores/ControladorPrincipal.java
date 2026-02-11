@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,29 +50,32 @@ public class ControladorPrincipal {
     }
 
     @GetMapping("/catalogo")
-    public String catalogo(Model model, 
-                           @RequestParam(required = false) String buscar,
-                           @RequestParam(required = false) String categoria) {
-        
-        List<Producto> productos;
+    public String catalogo(Model model,
+                       @RequestParam(required = false) String buscar,
+                       @RequestParam(required = false) Long categoria) {
 
-        if (buscar != null && !buscar.isBlank()) {
-            productos = productoRepository.findByNombreContainingOrMaterialContaining(buscar, buscar);
-        } else {
-            productos = productoRepository.findAll();
-        }
+    List<Producto> productos;
 
-        if (categoria != null && !categoria.equals("todos") && !categoria.isBlank()) {
-            productos = productos.stream()
-                .filter(p -> p.getCategoria().equalsIgnoreCase(categoria))
-                .collect(Collectors.toList());
-        }
-
-        model.addAttribute("productos", productos);
-        model.addAttribute("busquedaActual", buscar);
-        model.addAttribute("categoriaActual", categoria);
-        return "catalogo";
+    if (buscar != null && !buscar.isBlank()) {
+        productos = productoRepository
+                .findByNombreContainingOrMaterialContaining(buscar, buscar);
+    } else {
+        productos = productoRepository.findAll();
     }
+
+    if (categoria != null) {
+        productos = productos.stream()
+                .filter(p -> p.getCategoria() != null &&
+                             p.getCategoria().equals(categoria))
+                .collect(Collectors.toList());
+    }
+    model.addAttribute("productos", productos);
+    model.addAttribute("busquedaActual", buscar);
+    model.addAttribute("categoriaActual", categoria);
+
+    return "catalogo";
+    }
+
 
     @GetMapping("/producto/{cod}")
     public String verDetalles(@PathVariable("cod") String cod, Model model) {
@@ -141,10 +145,15 @@ public class ControladorPrincipal {
 
     @PostMapping("/carrito/finalizar")
     public String finalizarCompra(HttpSession session) {
-        String username = (String) session.getAttribute("usuario");
-        Usuario usuario = usuarioRepository.findByUsername(username);
+    String username = (String) session.getAttribute("usuario");
 
-        if (usuario == null) return "redirect:/login";
+    Optional<Usuario> usuarioOpt = usuarioRepository.findByUsername(username);
+
+    if (usuarioOpt.isEmpty()) {
+        return "redirect:/login";
+    }
+
+    Usuario usuario = usuarioOpt.get();
 
         Venta venta = new Venta();
         venta.setUsuario(usuario);

@@ -1,45 +1,42 @@
 package com.proyecto.proyecto.clases;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "productos")
 public class Producto {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_producto")
     private Long idProducto;
 
     @Column(name = "codigo_sku", unique = true)
     private String codigo;
 
     private String nombre;
-    private String categoria;
+
+    @Column(name = "id_categoria")
+    private Long categoria;
+
     private String material;
-    
+
     @Column(name = "precio_venta")
     private Double precio;
-    
+
+    @Column(name = "precio_oferta")
     private Double precioOferta;
-    
+
     @Column(name = "imagen_url")
     private String imagen;
 
-    private String descripcion;
-    private Integer stock = 100;
+    @Column(name = "stock_actual")
+    private Integer stock;
 
+    // 🔹 CONSTRUCTOR VACÍO
     public Producto() {}
 
-    public Producto(String codigo, String nombre, Double precio) {
-        this.codigo = codigo;
-        this.nombre = nombre;
-        this.precio = precio;
-    }
+    // 🔹 GETTERS Y SETTERS
 
     public Long getIdProducto() {
         return idProducto;
@@ -65,11 +62,11 @@ public class Producto {
         this.nombre = nombre;
     }
 
-    public String getCategoria() {
+    public Long getCategoria() {
         return categoria;
     }
 
-    public void setCategoria(String categoria) {
+    public void setCategoria(Long categoria) {
         this.categoria = categoria;
     }
 
@@ -105,14 +102,6 @@ public class Producto {
         this.imagen = imagen;
     }
 
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
     public Integer getStock() {
         return stock;
     }
@@ -120,6 +109,4 @@ public class Producto {
     public void setStock(Integer stock) {
         this.stock = stock;
     }
-    
-    
 }
