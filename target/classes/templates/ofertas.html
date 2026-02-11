@@ -58,8 +58,9 @@
                         </a>
 
                         <p class="card-text text-muted text-decoration-line-through" 
-                           th:text="'S/ ' + (${prod.precio} + ${prod.precio}*0.2)">S/ 0.00</p>
-                        <h4 class="text-danger fw-bold" th:text="'S/ ' + ${prod.precio}">S/ 0.00</h4>
+                            th:text="'S/ ' + ${prod.precio}">S/ 0.00</p>
+       
+                    <h4 class="text-danger fw-bold" th:text="'S/ ' + ${prod.precioOferta}">S/ 0.00</h4>
                     </div>
 
                     <div class="card-footer bg-white border-top-0 d-grid gap-2">

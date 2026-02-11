@@ -9,7 +9,6 @@ public class ItemCarrito {
         this.cantidad = cantidad;
     }
 
-    // Getters y Setters
     public Producto getProducto() { return producto; }
     public void setProducto(Producto producto) { this.producto = producto; }
     
@@ -20,6 +19,12 @@ public class ItemCarrito {
     }
 
     public double getSubtotal() {
-        return producto.precio * cantidad;
+        // VALIDACIÓN: Si el producto tiene precio de oferta, usamos ese.
+        // Si no, usamos el precio normal.
+        if (producto.getPrecioOferta() != null && producto.getPrecioOferta() > 0) {
+            return producto.getPrecioOferta() * cantidad;
+        } else {
+            return producto.getPrecio() * cantidad;
+        }
     }
 }

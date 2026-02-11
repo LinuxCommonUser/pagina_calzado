@@ -75,7 +75,9 @@
                             <span>Total:</span>
                             <span class="fw-bold fs-4 text-primary" th:text="'S/ ' + ${total}">0.00</span>
                         </div>
-                        <button class="btn btn-success w-100 py-2">Pagar Ahora</button>
+                        <form th:action="@{/carrito/finalizar}" method="post">
+                            <button type="submit" class="btn btn-success w-100 py-2">Pagar Ahora</button>
+                        </form>
                         <a th:href="@{/catalogo}" class="btn btn-outline-dark w-100 mt-2 btn-sm">Seguir comprando</a>
                     </div>
                 </div>

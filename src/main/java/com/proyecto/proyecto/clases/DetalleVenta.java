@@ -1,0 +1,62 @@
+package com.proyecto.proyecto.clases;
+
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "detalle_ventas")
+public class DetalleVenta {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idDetalle;
+
+    @ManyToOne
+    @JoinColumn(name = "id_venta")
+    private Venta venta;
+
+    @ManyToOne
+    @JoinColumn(name = "id_producto")
+    private Producto producto;
+
+    private Integer cantidad;
+    
+    private Double precio_unitario_momento; 
+
+    private Double subtotal;
+
+    public DetalleVenta() {
+    }
+
+    public DetalleVenta(Venta venta, Producto producto, Integer cantidad, Double precio_unitario_momento, Double subtotal) {
+        this.venta = venta;
+        this.producto = producto;
+        this.cantidad = cantidad;
+        this.precio_unitario_momento = precio_unitario_momento;
+        this.subtotal = subtotal;
+    }
+
+    public Long getIdDetalle() { return idDetalle; }
+    public void setIdDetalle(Long idDetalle) { this.idDetalle = idDetalle; }
+
+    public Venta getVenta() { return venta; }
+    public void setVenta(Venta venta) { this.venta = venta; }
+
+    public Producto getProducto() { return producto; }
+    public void setProducto(Producto producto) { this.producto = producto; }
+
+    public Integer getCantidad() { return cantidad; }
+    public void setCantidad(Integer cantidad) { this.cantidad = cantidad; }
+
+    public Double getPrecio_unitario_momento() { return precio_unitario_momento; }
+    public void setPrecio_unitario_momento(Double precio_unitario_momento) { this.precio_unitario_momento = precio_unitario_momento; }
+
+    public Double getSubtotal() { return subtotal; }
+    public void setSubtotal(Double subtotal) { this.subtotal = subtotal; }
+}

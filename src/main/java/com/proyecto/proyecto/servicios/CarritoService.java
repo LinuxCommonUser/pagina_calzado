@@ -11,14 +11,17 @@ import com.proyecto.proyecto.clases.ItemCarrito;
 import com.proyecto.proyecto.clases.Producto;
 
 @Service
-@SessionScope // ¡Importante! Mantiene los datos mientras el usuario navega
+@SessionScope // Mantiene los datos únicos por usuario mientras navega
 public class CarritoService {
+    
     private List<ItemCarrito> items = new ArrayList<>();
     
-    // Agrega item si no encuentra en la lista de carrito, caso contrario sube la cantidad
+    /**
+     * Agrega un item. Si ya existe, suma la cantidad.
+     */
     public void agregarItem(Producto producto, Integer cantidad) {
         Optional<ItemCarrito> itemExistente = items.stream()
-                .filter(i -> i.getProducto().codigo.equals(producto.codigo))
+                .filter(i -> i.getProducto().getCodigo().equals(producto.getCodigo()))
                 .findFirst();
 
         if (itemExistente.isPresent()) {
@@ -29,25 +32,42 @@ public class CarritoService {
         }
     }
 
-    // Remover el producto por código
+    /**
+     * Elimina un producto del carrito basado en su código SKU.
+     */
     public void eliminarItem(String codigo) {
-        items.removeIf(i -> i.getProducto().codigo.equals(codigo));
+        items.removeIf(i -> i.getProducto().getCodigo().equals(codigo));
     }
 
-    // Aumenta o disminuye las cantidades
+    /**
+     * Actualiza la cantidad de un producto específico.
+     */
     public void actualizarCantidad(String codigo, Integer cantidad) {
         items.stream()
-            .filter(i -> i.getProducto().codigo.equals(codigo))
+            .filter(i -> i.getProducto().getCodigo().equals(codigo))
             .findFirst()
             .ifPresent(item -> item.setCantidad(cantidad));
     }
 
-    // Devuelve los items del carrito
+    /**
+     * Devuelve la lista actual de items.
+     */
     public List<ItemCarrito> obtenerItems() {
         return items;
     }
 
+    /**
+     * Calcula el total de la compra sumando los subtotales.
+     */
     public double obtenerTotal() {
         return items.stream().mapToDouble(ItemCarrito::getSubtotal).sum();
+    }
+
+    /**
+     * Vacía el carrito después de una compra exitosa.
+     * Es llamado por el ControladorPrincipal en finalizarCompra().
+     */
+    public void limpiarCarrito() {
+        items.clear();
     }
 }

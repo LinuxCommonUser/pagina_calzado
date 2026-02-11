@@ -1,24 +1,55 @@
 package com.proyecto.proyecto.clases;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "productos")
 public class Producto {
-        public String codigo;
-        public String nombre;
-        public String categoria;
-        public String material;
-        public double precio;
-        public String imagen;
-        public String descripcion;
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idProducto;
 
-        public Producto(String codigo, String nombre, String categoria, String material, double precio, String imagen) {
-            this.codigo = codigo;
-            this.nombre = nombre;
-            this.categoria = categoria;
-            this.material = material;
-            this.precio = precio;
-            this.imagen = imagen;
-        }
+    @Column(name = "codigo_sku", unique = true)
+    private String codigo;
 
-        public String getCodigo() {
+    private String nombre;
+    private String categoria;
+    private String material;
+    
+    @Column(name = "precio_venta")
+    private Double precio;
+    
+    private Double precioOferta;
+    
+    @Column(name = "imagen_url")
+    private String imagen;
+
+    private String descripcion;
+    private Integer stock = 100;
+
+    public Producto() {}
+
+    public Producto(String codigo, String nombre, Double precio) {
+        this.codigo = codigo;
+        this.nombre = nombre;
+        this.precio = precio;
+    }
+
+    public Long getIdProducto() {
+        return idProducto;
+    }
+
+    public void setIdProducto(Long idProducto) {
+        this.idProducto = idProducto;
+    }
+
+    public String getCodigo() {
         return codigo;
     }
 
@@ -50,12 +81,20 @@ public class Producto {
         this.material = material;
     }
 
-    public double getPrecio() {
+    public Double getPrecio() {
         return precio;
     }
 
-    public void setPrecio(double precio) {
+    public void setPrecio(Double precio) {
         this.precio = precio;
+    }
+
+    public Double getPrecioOferta() {
+        return precioOferta;
+    }
+
+    public void setPrecioOferta(Double precioOferta) {
+        this.precioOferta = precioOferta;
     }
 
     public String getImagen() {
@@ -67,10 +106,20 @@ public class Producto {
     }
 
     public String getDescripcion() {
-            return descripcion;
-        }
+        return descripcion;
+    }
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
+    public Integer getStock() {
+        return stock;
+    }
+
+    public void setStock(Integer stock) {
+        this.stock = stock;
+    }
+    
+    
 }

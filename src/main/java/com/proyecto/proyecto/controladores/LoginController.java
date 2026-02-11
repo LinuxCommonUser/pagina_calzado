@@ -1,21 +1,28 @@
 package com.proyecto.proyecto.controladores;
 
-import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.proyecto.proyecto.clases.Usuario;
+import com.proyecto.proyecto.repositorios.UsuarioRepository;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class LoginController {
 
     private static final List<Map<String, String>> usuarios = new ArrayList<>();
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
 
     @GetMapping("/login")
@@ -24,23 +31,16 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String procesarLogin(
-            @RequestParam String username,
-            @RequestParam String password,
-            HttpSession session,
-            Model model) {
+    public String procesarLogin(@RequestParam String username, @RequestParam String password, HttpSession session, Model model) {
+        Usuario usuario = usuarioRepository.findByUsername(username);
 
-        // Validar contra la lista de usuarios
-        for (Map<String, String> usuario : usuarios) {
-            if (usuario.get("username").equals(username)
-                    && usuario.get("password").equals(password)) {
-
-                session.setAttribute("usuario", username);
-                return "redirect:/";
-            }
+        if (usuario != null && usuario.getPassword().equals(password)) {
+            session.setAttribute("idUsuario", usuario.getIdUsuario());
+            session.setAttribute("usuario", usuario.getUsername());
+            return "redirect:/";
         }
-
-        model.addAttribute("error", "Usuario o contraseña incorrectos");
+        
+        model.addAttribute("error", "Credenciales incorrectas");
         return "login";
     }
 
@@ -51,36 +51,18 @@ public class LoginController {
     }
 
     @PostMapping("/register")
-    public String procesarRegistro(
-            @RequestParam String nombre,
-            @RequestParam String correo,
-            @RequestParam String username,
-            @RequestParam String password,
-            Model model) {
-
-        // Verificar si el username ya existe
-        for (Map<String, String> usuario : usuarios) {
-            if (usuario.get("username").equals(username)) {
-                model.addAttribute("error", "El usuario ya existe");
-                return "login";
-            }
-        }
-
-        // Crear usuario
-        Map<String, String> nuevoUsuario = new HashMap<>();
-        nuevoUsuario.put("nombre", nombre);
-        nuevoUsuario.put("correo", correo);
-        nuevoUsuario.put("username", username);
-        nuevoUsuario.put("password", password);
-
-        // Guardar en la lista
-        usuarios.add(nuevoUsuario);
-
-        // Enviar datos a la vista de confirmación
-        model.addAttribute("nombre", nombre);
-        model.addAttribute("correo", correo);
-        model.addAttribute("username", username);
-
+    public String procesarRegistro(@RequestParam String nombre, @RequestParam String correo, @RequestParam String dni,@RequestParam String telefono,
+                                   @RequestParam String username, @RequestParam String password) {
+                                    
+        Usuario u = new Usuario();
+        u.setNombre_completo(nombre);
+        u.setCorreo(correo);
+        u.setUsername(username);
+        u.setPassword(password);
+        u.setDni_ruc(dni);
+        u.setTelefono(telefono);
+        
+        usuarioRepository.save(u);
         return "registro-exitoso";
     }
 }

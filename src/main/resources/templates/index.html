@@ -10,12 +10,13 @@
     <link rel="stylesheet" th:href="@{css/footer.css}">
     <style>
         .hero-section {
-            background: url('/img/banner-2.jpg');
+            background: url('/img/banner-2.jpg'); 
             background-size: cover;
             background-position: center;
             color: white;
             padding: 150px 0;
             min-height: 500px;
+            box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.3);
         }
     </style>
 </head>
@@ -43,14 +44,49 @@
         </div>
 
         <h3 class="border-bottom pb-2 mb-4">Destacados de Temporada</h3>
+        
         <div class="row row-cols-1 row-cols-md-4 g-4">
             <div class="col" th:each="prod : ${productosDestacados}">
-                <div class="card h-100 border-0 shadow-sm">
-                    <img th:src="${prod.imagen}" class="card-img-top rounded" alt="...">
-                    <div class="card-body text-center">
-                        <h6 class="card-title fw-bold" th:text="${prod.nombre}">Producto</h6>
-                        <p class="card-text text-primary" th:text="'S/ ' + ${prod.precio}"></p>
+                <div class="card h-100 border-0 shadow-sm position-relative">
+                    
+                    <div th:if="${prod.precioOferta != null}" 
+                         class="position-absolute top-0 end-0 bg-danger text-white px-2 py-1 rounded-start" 
+                         style="z-index: 10; font-size: 0.8rem; font-weight: bold;">
+                        OFERTA
                     </div>
+
+                    <a th:href="@{/producto/{cod}(cod=${prod.codigo}, origen='inicio')}">
+                        <img th:src="${prod.imagen}" class="card-img-top rounded" th:alt="${prod.nombre}"
+                             style="cursor: pointer; height: 200px; object-fit: cover;">
+                    </a>
+
+                    <div class="card-body text-center">
+                        <a th:href="@{/producto/{cod}(cod=${prod.codigo}, origen='inicio')}" class="text-decoration-none text-dark">
+                            <h6 class="card-title fw-bold" th:text="${prod.nombre}">Producto</h6>
+                        </a>
+                        
+                        <div class="mt-2">
+                            <div th:if="${prod.precioOferta != null}">
+                                <span class="text-muted text-decoration-line-through small" 
+                                      th:text="'S/ ' + ${prod.precio}">S/ 0.00</span>
+                                <span class="text-danger fw-bold ms-1" 
+                                      th:text="'S/ ' + ${prod.precioOferta}">S/ 0.00</span>
+                            </div>
+                            <div th:unless="${prod.precioOferta != null}">
+                                <span class="text-primary fw-bold" th:text="'S/ ' + ${prod.precio}">S/ 0.00</span>
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                    <div class="card-footer bg-white border-top-0 pb-3">
+                         <button th:data-codigo="${prod.codigo}" 
+                                onclick="agregar(this.getAttribute('data-codigo'))"
+                                class="btn btn-outline-dark btn-sm w-100">
+                            Agregar al carrito
+                        </button>
+                    </div>
+
                 </div>
             </div>
         </div>
