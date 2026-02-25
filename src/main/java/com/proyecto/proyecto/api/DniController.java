@@ -11,8 +11,8 @@ import java.util.Map;
 @RequestMapping("/api/dni")
 public class DniController {
 
-    // ✅ URL CORREGIDA
-    private final String API_URL = "https://api.apisperu.com/api/v1/dni/";
+    
+    private final String API_URL = "https://dniruc.apisperu.com/api/v1/dni/";
 
     private final String TOKEN = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImVsZml0bzA0NkBnbWFpbC5jb20ifQ.ELGYTY8qg4VoAq5KRWCbobyEXBpcCH80mXEQ0TxpaO0";
 
@@ -38,7 +38,7 @@ public class DniController {
             return ResponseEntity.ok(response.getBody());
 
         } catch (Exception e) {
-            e.printStackTrace(); // 🔥 IMPORTANTE para ver error real
+            e.printStackTrace(); // IMPORTANTE para ver error real
 
             Map<String, String> error = new HashMap<>();
             error.put("error", "No se pudo consultar el DNI");
