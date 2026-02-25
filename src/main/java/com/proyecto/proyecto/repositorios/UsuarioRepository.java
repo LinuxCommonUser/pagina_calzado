@@ -7,6 +7,7 @@ import com.proyecto.proyecto.clases.Usuario;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
+    //query
     Optional<Usuario> findByUsername(String username);
 
 }
