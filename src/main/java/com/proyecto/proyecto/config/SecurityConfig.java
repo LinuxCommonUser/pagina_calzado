@@ -24,21 +24,21 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
 
-            // 🔥 IMPORTANTE: registrar el servicio correctamente
+            // IMPORTANTE: registrar el servicio correctamente
             .userDetailsService(userDetailsService)
 
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/login", "/register", "/css/**", "/js/**").permitAll()
-                .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/vendedor/**").hasRole("VENDEDOR")
-                .requestMatchers("/cliente/**").hasRole("CLIENTE")
+                .requestMatchers("/", "/login", "/register", "/css/**", "/js/**" ).permitAll()
+                .requestMatchers("/admin/**", "/carrito/**").hasRole("ADMIN")
+                .requestMatchers("/admin/**", "/carrito/**").hasRole("VENDEDOR")
+                .requestMatchers("/cliente/**", "/carrito/**").hasRole("CLIENTE")
                 .anyRequest().authenticated()
             )
 
             .formLogin(form -> form
                 .loginPage("/login")
                 .defaultSuccessUrl("/", true)
-                .failureUrl("/login?error=true") // 🔥 importante para ver errores
+                .failureUrl("/login?error=true") // importante para ver errores
                 .permitAll()
             )
 
