@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mi Cuenta | Calzados Bellasen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="../img/favicon.ico">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{css/header.css}">
+    <link rel="stylesheet" th:href="@{css/footer.css}">
+</head>
+<body class="d-flex flex-column min-vh-100">
+<div th:replace="~{fragments/header :: header}"></div>
+<div class="container my-5">
+    <div class="row">
+        
+        <div class="col-lg-4 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-header text-white text-center py-3" style="background-color: #6b3e26;">
+                    <h5 class="mb-0 fw-bold">Mi Perfil</h5>
+                </div>
+                <div class="card-body bg-light">
+                    <div class="text-center mb-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="#6b3e26" class="bi bi-person-circle" viewBox="0 0 16 16">
+                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                        </svg>
+                    </div>
+                    <h5 class="text-center fw-bold mb-4" th:text="${usuario.nombreCompleto}">Nombre del Cliente</h5>
+                    
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item bg-transparent px-0">
+                            <strong>DNI/RUC:</strong> <span class="float-end" th:text="${usuario.dniRuc}">12345678</span>
+                        </li>
+                        <li class="list-group-item bg-transparent px-0">
+                            <strong>Usuario:</strong> <span class="float-end" th:text="${usuario.username}">user123</span>
+                        </li>
+                        <li class="list-group-item bg-transparent px-0">
+                            <strong>Correo:</strong> <span class="float-end" th:text="${usuario.correo}">correo@email.com</span>
+                        </li>
+                        <li class="list-group-item bg-transparent px-0">
+                            <strong>Teléfono:</strong> <span class="float-end" th:text="${usuario.telefono}">999888777</span>
+                        </li>
+                    </ul>
+                    
+                    <!--<div class="d-grid mt-4">
+                        <a href="#" class="btn btn-outline-dark btn-sm">Editar mis datos</a>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <h3 class="fw-bold mb-3" style="color: #6b3e26;">Mis Pedidos</h3>
+            
+            <div th:if="${compras == null or compras.isEmpty()}" class="alert alert-info shadow-sm">
+                Aún no has realizado ninguna compra. <a th:href="@{/catalogo}" class="alert-link">¡Visita nuestro catálogo!</a>
+            </div>
+
+            <div th:if="${compras != null and !compras.isEmpty()}" class="accordion shadow-sm" id="accordionCompras">
+                <div th:each="venta : ${compras}" class="accordion-item mb-2 border">
+                    <h2 class="accordion-header" th:id="'heading' + ${venta.idVenta}">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                th:data-bs-target="'#collapse' + ${venta.idVenta}" aria-expanded="false" 
+                                th:aria-controls="'collapse' + ${venta.idVenta}">
+                            <div class="d-flex justify-content-between align-items-center w-100 pe-3">
+                                <div>
+                                    <strong style="color: #6b3e26;">Pedido #<span th:text="${venta.idVenta}"></span></strong>
+                                    <span class="mx-2 text-muted">|</span>
+                                    <span th:text="${#temporals.format(venta.fecha, 'dd/MM/yyyy HH:mm')}"></span>
+                                </div>
+                                <div>
+                                    <span class="badge bg-secondary me-2" th:text="${venta.metodo_pago}">EFECTIVO</span>
+                                    <span class="badge rounded-pill bg-success fs-6">
+                                        S/ <span th:text="${#numbers.formatDecimal(venta.total, 1, 2)}"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </button>
+                    </h2>
+                    
+                    <div th:id="'collapse' + ${venta.idVenta}" class="accordion-collapse collapse" 
+                         th:aria-labelledby="'heading' + ${venta.idVenta}" data-bs-parent="#accordionCompras">
+                        <div class="accordion-body bg-light">
+                            <div class="table-responsive">
+                                <table class="table table-sm table-hover align-middle mb-0">
+                                    <thead class="table-secondary">
+                                        <tr>
+                                            <th>Producto</th>
+                                            <th class="text-center">Cant.</th>
+                                            <th class="text-end">P. Unit.</th>
+                                            <th class="text-end">Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="detalle : ${venta.detalles}">
+                                            <td th:text="${detalle.producto.nombre}">Nombre del Calzado</td>
+                                            <td class="text-center" th:text="${detalle.cantidad}">1</td>
+                                            <td class="text-end">S/ <span th:text="${#numbers.formatDecimal(detalle.precio_unitario_momento, 1, 2)}"></span></td>
+                                            <td class="text-end fw-bold text-primary">S/ <span th:text="${#numbers.formatDecimal(detalle.subtotal, 1, 2)}"></span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</html>

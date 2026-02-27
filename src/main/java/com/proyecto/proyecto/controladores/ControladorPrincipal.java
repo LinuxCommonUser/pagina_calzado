@@ -1,11 +1,12 @@
 package com.proyecto.proyecto.controladores;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -180,5 +181,25 @@ public class ControladorPrincipal {
         carritoService.limpiarCarrito();
 
         return "redirect:/compra-exitosa";
+    }
+
+    @GetMapping("/cliente/dashboard")
+    public String dashboardCliente(Model model, Principal principal) {
+        // 1. Obtener el email/username del usuario logueado
+        String username = principal.getName(); 
+        
+        // 2. Buscar la entidad Usuario en la base de datos
+        Optional<Usuario> usuario = usuarioRepository.findByUsername(username);
+
+        // 3. Obtener sus compras
+        if (usuario != null) {
+            Usuario user = usuario.get(); 
+            List<Venta> misCompras = ventaRepository.findByUsuarioOrderByFechaDesc(user);
+            model.addAttribute("compras", misCompras);
+            model.addAttribute("usuario", user);
+        }
+
+        // 4. Retornar la vista
+        return "cliente/dashboard"; 
     }
 }
